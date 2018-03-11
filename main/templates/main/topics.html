@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}标签{% endblock %}
+
+{% block content %}
+    {% with topics.count as totoal_topics %}
+        <h2>{{ totoal_topics }}个话题</h2>
+    {% endwith %}
+{% for topic in topics %}
+<ul>
+<li><a href="#">{{ topic.name }}</a></li>
+</ul>
+{% endfor %}
+
+{% endblock %}

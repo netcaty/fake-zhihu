@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}
+{{ user.username }}
+{% endblock %}
+{% block content %}
+ <h1>个人主页</h1>
+<div id="people_info">
+{% with profile=user.profile %}
+{% thumbnail profile.photo '100x100' crop='100%' as im %}
+    <a href="{{ profile.photo.url }}">
+    <img src="{{ im.url }}" alt="用户图像">
+    </a>
+    {% endthumbnail %}
+    <p>{{ user.username }}</p>
+    <p>{{ profile.get_sex_display }}</p>
+    <p>{{ profile.introduction }}</p>
+{% endwith %}
+</div>
+{% if user.username == request.user.username %}
+    <span><a href="{% url 'profile_edit' %}">编辑个人资料</a></span>
+    {% else %}
+    <span>
+        <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+    class="followbutton">
+    {% if request.user not in user.followers.all %}
+        关注
+        {% else %}
+        取消关注
+    {% endif %}
+    </a>
+    </span>
+{% endif %}
+
+    <div class="count">
+    关注者<span class="followers-count">{{ user.followers.count }}</span>
+    关注了<span class="following-count">{{ user.following.count }}</span>
+    </div>
+
+    <div class="activity-stream">动态
+    {% for action in actions %}
+        <div>
+            {{ action.verb }}
+                <span><a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a> {{ action.created }}</span>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block domready %}
+    $('a.followbutton').click(function (e) {
+        e.preventDefault();
+        $.post('{% url 'user_follow' %}',
+            {
+                id: $(this).data('id'),
+                action: $(this).data('action')
+            },
+        function (data) {
+            if(data['status'] == 'ok'){
+                var previous_action = $('a.followbutton').data('action');
+
+                    // toggle data-action
+                $('a.followbutton').data('action', previous_action == 'follow' ? 'unfollow' : 'follow');
+                    // toggle link text
+                $('a.followbutton').text(previous_action == 'follow' ? '取消关注' : '关注');
+
+                    // update total followers
+                var previous_followers = parseInt($('span.followers-count').text());
+                $('span.followers-count').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+            }
+        });
+    });
+{% endblock %}

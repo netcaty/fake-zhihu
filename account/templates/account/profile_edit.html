@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+编辑个人资料
+{% endblock %}
+{% block content %}
+ <h1>编辑个人资料</h1>
+    <form action="." method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        {{ profile_form.as_p }}
+    <p><input type="submit" value="保存"></p>
+    </form>
+{% endblock %}

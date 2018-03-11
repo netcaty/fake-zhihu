@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ question.title }}{% endblock %}
+
+{% block content %}
+{% for question in questions %}
+    <h2>
+    <a href="{{ question.get_absolute_url }}">
+        {{ question.title }}
+    </a>
+    </h2>
+    <p>
+    编辑于 {{ question.created }} by {{ question.author }}
+    </p>
+    <hr>
+{% endfor %}
+{% endblock %}

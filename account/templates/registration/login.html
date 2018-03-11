@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Log-in{% endblock %}
+{% block content %}
+    <h1>登录</h1>
+    <form class="login-form" action="{% url 'account:login' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><input type="hidden" name="next" value="{{ next }}"></p>
+        <p><input type="submit" value="登录"></p>
+    </form>
+{% endblock %}

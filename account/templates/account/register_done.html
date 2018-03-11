@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}
+欢迎
+{% endblock %}
+{% block content %}
+ <h1>欢迎{{ new_user.username }}</h1>
+<p>你已成功注册成为知乎一员。现在可以<a href="{% url 'account:login' %}">登录</a></p>
+{% endblock %}

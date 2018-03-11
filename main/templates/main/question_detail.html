@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}{{ question.title }}{% endblock %}
+
+{% block content %}
+<div id="question">
+    <h2>{{ question.title }}</h2>
+    <p>
+        {{ question.body }}
+    </p>
+    所属话题:
+    {% for topic in question.topics.all %}
+        <a href="#">{{ topic.name }}</a>
+    {% endfor %}
+    被浏览 <span><strong>{{ total_views }}</strong></span>
+
+    <hr>
+</div>
+    <div id="similar_questions">
+    <h3>相关问题</h3>
+    {% for similar_question in similar_questions %}
+        <a href="{{ similar_question.get_absolute_url }}">
+            {{ similar_question.title }}
+        {{ similar_question.answers.count }}个回答
+        </a>
+        {% empty %}
+        没有相关问题
+    {% endfor %}
+
+    </div>
+    <div id="answer-form">
+    {% if request.user.is_authenticated %}
+
+        <form action="{% url 'create_answer' question.id %}" method="post">
+            {% csrf_token %}
+            {{ answer_form.as_p }}
+
+            <p><input type="submit" value="提交回答"></p>
+        </form>
+
+    {% endif %}
+    </div>
+    {% with answers.count as totoal_answers %}
+    <h2>
+    {{ totoal_answers }}个回答
+    </h2>
+    {% endwith %}
+<div id="answer-container">
+{% for answer in answers %}
+    <div class="answer">
+    {% thumbnail answer.author.profile.photo '50x50' crop='100%' as im %}
+        <p><a href="{{ answer.author.get_absolute_url }}">
+        <img src="{{ im.url }}">{{ answer.author.username }}</a></p>
+    {% endthumbnail %}
+
+        <p>{{ answer.body|linebreaks }}</p>
+        <p>编辑于 {{ answer.updated }}</p>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
