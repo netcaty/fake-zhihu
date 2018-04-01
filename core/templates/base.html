@@ -81,11 +81,10 @@
     </div>
 </nav>
 {% if messages %}
-    <ul class="messages">
+    <ul class="uk-alert uk-alert-success">
         {% for message in messages %}
             <li class="{{ message.tags }}">
                 {{ message|safe }}
-                <a href="#" class="close"></a>
             </li>
         {% endfor %}
     </ul>
