@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'main',
     'taggit',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
+    'widget_tweaks',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'zhihu',
         'USER': 'root',
-        'PASSWORD': '123456',
+        'PASSWORD': 'lpc.6610402',
         'HOST': '192.168.0.103',
         'PORT': '3306',
     }
