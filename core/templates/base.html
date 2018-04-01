@@ -1,0 +1,122 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}知乎，与世界分享你的故事{% endblock %}</title>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/uikit/2.25.0/css/uikit.css"/>
+    <script src="//cdn.bootcss.com/uikit/2.25.0/js/uikit.js"></script>
+    <style>
+        nav > .uk-container {
+            padding: 10px 0;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 90px 0;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<nav class="uk-navbar">
+    <div class="uk-container uk-container-center">
+
+        <a href="#" class="uk-navbar-brand">知乎</a>
+        {% url 'activity' as a %}
+        {% url 'topic' as t %}
+        {% url 'question' as q %}
+        {% url 'ranking' as r %}
+        <ul class="uk-navbar-nav">
+            <li {% if q == request.path %}class="uk-active"{% endif %}>
+                <a href="{{ q }}">问题</a>
+            </li>
+            <li {% if r == request.path %}class="uk-active"{% endif %}>
+                <a href="{{ r }}">最热</a>
+            </li>
+
+            <li {% if t == request.path %}class="uk-active"{% endif %}>
+                <a href="{{ t }}">话题</a>
+            </li>
+
+            <li {% if a == request.path %}class="uk-active"{% endif %}>
+                <a href="{{ a }}">动态</a>
+            </li>
+        </ul>
+
+
+        <div class="uk-navbar-flip">
+            <ul class="uk-navbar-nav">
+                {% if request.user.is_authenticated %}
+                    <li class="uk-parent" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+                        <a href="">{{ request.user }}</a>
+
+                        <div class="uk-dropdown uk-dropdown-navbar" style="top: 40px; left: 0px;">
+                            <ul class="uk-nav uk-nav-navbar">
+                                <li><a href="{% url 'account:logout' %}">退出</a></li>
+                            </ul>
+                        </div>
+
+                    </li>
+                {% else %}
+                    <ul class="uk-navbar-nav">
+                        <li><a href="{% url 'account:login' %}">登录</a></li>
+                        <li><a href="{% url 'account:register' %}">注册</a></li>
+                    </ul>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="uk-navbar-content uk-navbar-center">
+            <form class="uk-form uk-margin-remove uk-display-inline-block" action="#">
+                <input class="uk-form-width-medium" type="text" placeholder="开始搜索">
+                <button class="uk-button uk-button-primary">提问</button>
+            </form>
+        </div>
+    </div>
+</nav>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close"></a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- scripts begin here -->
+<script>
+    var csrftoken = $.cookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomin) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken);
+            }
+        }
+    });
+    $(document).ready(function () {
+        {% block domready %}
+        {% endblock %}
+    });
+
+</script>
+<!-- scripts end here -->
+</body>
+</html>

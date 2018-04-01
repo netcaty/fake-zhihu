@@ -46,7 +46,7 @@ def register(request):
 
     return render(request,
                   'account/register.html',
-                  {'register_form': register_form})
+                  {'form': register_form})
 
 def login(request):
     form = LoginForm(request.POST or None)

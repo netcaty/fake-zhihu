@@ -1,13 +1,32 @@
 {% extends 'base.html' %}
-
+{% load widget_tweaks %}
 {% block title %}
 注册
 {% endblock %}
 {% block content %}
- <h1>注册</h1>
-    <form action="." method="post">
-    {% csrf_token %}
-        {{ register_form.as_p }}
-    <p><input type="submit" value="注册"></p>
-    </form>
+    <div class="uk-container uk-container-center uk-margin-top" style="max-width: 400px">
+        <h2 class="uk-text-center">注册</h2>
+        <form class="uk-form-stacked uk-form" action="{% url 'account:register' %}" method="post">
+            <div class="error-list">
+                {% for error in form.non_field_errors %}
+                    <p class="uk-text-warning uk-text-left">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% for field in form.visible_fields %}
+              <div class="uk-form-row">
+                <label class="uk-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field|add_class:"uk-width-1-1 uk-form-large" }}
+                {% for error in field.errors %}
+                  <p class="uk-text-warning uk-text-left">{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endfor %}
+            <div class="uk-form-row">
+                <button class="uk-width-1-1 uk-button uk-button-primary uk-button-large" type="submit">注册</button>
+            </div>
+        </form>
+        </div>
+    </div>
 {% endblock %}
