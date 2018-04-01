@@ -72,7 +72,7 @@ def profile_edit(request):
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, '资料更新成功')
-            return HttpResponseRedirect(reverse('main:people', args=[request.user.username]))
+            return HttpResponseRedirect(reverse('core:people', args=[request.user.username]))
         else:
             messages.error(request, '资料更新失败')
     else:

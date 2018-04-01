@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from main.views import index
+from core.views import index, search
 urlpatterns = [
     # Examples:
     # url(r'^$', index, name='home'),
@@ -11,12 +11,12 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^account/', include('account.urls',
-                              namespace='account',
-                              app_name='account')),
+                              namespace='account')),
 
-    url(r'^', include('main.urls')),
+    url(r'^', include('core.urls')),
     # 主页
     url(r'^$', index, name='index'),
+    url(r'^q/$', search, name='search'),
 ]
 
 if settings.DEBUG:

@@ -33,7 +33,7 @@ def activity(request):
                         .prefetch_related('target')
 
     return render(request,
-                  'main/activity.html',
+                  'core/activity.html',
                   {'actions': actions})
 
 
@@ -42,7 +42,7 @@ def question(request):
     questions = Question.objects.all()
 
     return render(request,
-                  'main/question.html',
+                  'core/question.html',
                   {'questions': questions})
 
 @login_required
@@ -54,7 +54,7 @@ def question_ranking(request):
     most_viewd.sort(key=lambda x: question_ranking_ids.index(x.id))
 
     return render(request,
-                  'main/question_rank.html',
+                  'core/question_rank.html',
                   {'most_viewd': most_viewd})
 
 #首页视图转到这里
@@ -73,7 +73,7 @@ def question_detail(request, id):
     answer_form = AnswerForm(request.POST or None)
 
     return render(request,
-                  'main/question_detail.html',
+                  'core/question_detail.html',
                   {'question': question,
                    'answers': answers,
                    'similar_questions': similar_questions,
@@ -85,14 +85,14 @@ def question_detail(request, id):
 def topic(request):
     topics = Tag.objects.all()
     return render(request,
-                  'main/topics.html',
+                  'core/topics.html',
                   {'topics': topics})
 
 def people(request, username):
     user = get_object_or_404(User,username=username)
     actions = Action.objects.filter(user=user)
     return render(request,
-                  'main/people.html',
+                  'core/people.html',
                   {'user': user, 'actions': actions})
 
 @require_POST
@@ -133,3 +133,10 @@ def user_follow(request):
         except User.DoesNotExist:
             return JsonResponse({'status': 'ko'})
     return JsonResponse({'status': 'ko'})
+
+
+def search(request):
+    word = request.GET.get('word')
+    if not word:
+        return JsonResponse({'error': 'You got nothing'})
+    return JsonResponse({'success': 'Will be complete soon!'})

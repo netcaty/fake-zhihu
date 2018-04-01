@@ -55,8 +55,9 @@
                     <li class="uk-parent" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
                         <a href="">{{ request.user }}</a>
 
-                        <div class="uk-dropdown uk-dropdown-navbar" style="top: 40px; left: 0px;">
+                        <div class="uk-dropdown-blank uk-dropdown-navbar" style="top: 40px; left: 0px;">
                             <ul class="uk-nav uk-nav-navbar">
+                                <li><a href="{{ request.user.get_absolute_url }}">主页</a></li>
                                 <li><a href="{% url 'account:logout' %}">退出</a></li>
                             </ul>
                         </div>
@@ -72,9 +73,9 @@
         </div>
 
         <div class="uk-navbar-content uk-navbar-center">
-            <form class="uk-form uk-margin-remove uk-display-inline-block" action="#">
-                <input class="uk-form-width-medium" type="text" placeholder="开始搜索">
-                <button class="uk-button uk-button-primary">提问</button>
+            <form class="uk-form uk-margin-remove uk-display-inline-block" action="{% url 'search' %}">
+                <input class="uk-form-width-medium" type="text" placeholder="随便搜索" name="word">
+                <button class="uk-button uk-button-primary" type="submit">搜索</button>
             </form>
         </div>
     </div>
