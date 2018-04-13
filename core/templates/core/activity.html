@@ -2,32 +2,38 @@
 {% load thumbnail %}
 {% block content %}
 
-{% for action in actions %}
-{% with user=action.user profile=action.user.profile %}
-<div class="action">
-	<div class="images">
-		{% if profile.photo %}
-            {% thumbnail profile.photo "40x40" crop="100%" as im %}
-                <a href="{{ user.get_absolute_url }}">
-					<img src="{{ im.url }}" alt="{{ user.get_full_name }}" class="item-img">
-				</a>
-            {% endthumbnail %}
-		{% endif %}
-	</div>
-	<div class="info">
-		<p><span class="date">{{ action.created|timesince }} ago</span><br />
-		<a href="{{ user.get_absolute_url }}">{{ user.username }}</a>
-		{{ action.verb }}
-		{% if action.target %}
-		    {% with target=action.target %}
-				<a href="{{ target.get_absolute_url }}">{{ target }}</a>
-			{% endwith %}
-		{% endif %}
-		</p>
-	</div>
-</div>
-{% endwith %}
+    {% for action in actions %}
+        <div class="ui text container">
+            <div class="ui feed">
+                {% with user=action.user profile=action.user.profile %}
+                    <div class="event">
+                        <div class="label">
+                            {% if profile.photo %}
+                                {% thumbnail profile.photo "40x40" crop="100%" as im %}
+                                    <a href="{{ user.get_absolute_url }}">
+                                        <img src="{{ im.url }}" alt="{{ user.get_full_name }}">
+                                    </a>
+                                {% endthumbnail %}
+                            {% endif %}
+                        </div>
+                        <div class="content">
+                            <div class="summary">
+                                <a href="{{ user.get_absolute_url }}">{{ user.username }}</a>
+                                {{ action.verb }}
+                                {% if action.target %}
+                                    {% with target=action.target %}
+                                        <a href="{{ target.get_absolute_url }}">{{ target }}</a>
+                                    {% endwith %}
+                                {% endif %}
+                                <span class="date">{{ action.created|timesince }} ago</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                {% endwith %}
     {% empty %}
-    <p>你还没有关注任何人哦!</p>
-{% endfor %}
+        <p>你还没有关注任何人哦!</p>
+    {% endfor %}
 {% endblock %}

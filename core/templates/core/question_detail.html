@@ -1,22 +1,94 @@
 {% extends 'base.html' %}
 
+{% load awesome_tags %}
 {% block title %}{{ question.title }}{% endblock %}
-
 {% block content %}
-    <div class="ui grid">
-        <div class="eleven wide column">
-            <div class="card">
-                <div class="content"></div>
+    <div class="ui segement">
+        <div class="ui container grid">
+            <div class="eleven wide column">
+                <div class="ui very relaxed horizontal list">
+                    <div class="item">
+                        <a class="button primary" href="#">1</a>
+                    </div>
+                    <div class="item">
+                        <a class="button primary" href="#">2</a>
+                    </div>
+                    <div class="item">
+                        <a class="button primary" href="#">3</a>
+                    </div>
+                </div>
                 <div class="content">
-                    <div class="header">{{ question }}</div>
+                    <h2 class="ui header">{{ question.title }}</h2>
                     <div class="description">
                         {{ question.body }}
                     </div>
                 </div>
             </div>
+
+            <div class=" five wide column">
+                <div class="ui small statistics">
+                    <div class="statistic">
+                        <div class="label">
+                            关注者
+                        </div>
+                        <div class="value">
+                            5,550
+                        </div>
+
+                    </div>
+                    <div class="statistic">
+
+                        <div class="label">
+                            被浏览
+                        </div>
+                        <div class="value">
+                            5,550
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="five wide column orange">
-            {#  {% similar_questions question %} #}
+    </div>
+
+    <div class="ui segment">
+
+        <div class="ui container grid">
+            <div class="eleven wide column">
+                <div class="content">
+                    <div class="ui buttons right floated">
+                        <a class="ui button">默认排序</a>
+                        <a class="ui button">时间排序</a>
+                    </div>
+                    <div class="ui header">{{ question.answers_count }}个回答
+                    </div>
+
+                </div>
+                <div class="ui list">
+                    {% for answer in answers %}
+                    <div class="item">
+                    {{ answer.body|linebreaks }}
+                    </div>
+                        <hr class="ui divider">
+                    {% endfor %}
+
+                </div>
+
+                    <h3 class="ui header">撰写答案</h3>
+
+                        <form class="ui form" action="." method="post">
+                            {% csrf_token %}
+                            <div class="field">
+                                <textarea name="body" id="answer"></textarea>
+                            </div>
+                            <button class="ui button" type="submit">提交回答</button>
+                        </form>
+
+
+            </div>
+            <div class="five wide column">
+                {% similar_questions question %}
+            </div>
         </div>
     </div>
 {% endblock %}

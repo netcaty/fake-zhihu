@@ -12,7 +12,6 @@
 
     <style type="text/css">
         body {
-            background-color: #e6ecf0;
         }
 
         .ui.menu .item img.logo {
@@ -33,29 +32,29 @@
 <!-- navbar begins -->
 <div class="ui menu">
     <div class="ui container">
-        {% url 'index' as index %}
-        {% url 'question' as question %}
-        {% url 'topic' as topic %}
-        {% url 'activity' as activity %}
-        <a href="{% url 'index' %}" class="header {% if request.path == index %} active {% endif %} item">
+        {% url 'index' as i %}
+        {% url 'question' as q %}
+        {% url 'topic' as t %}
+        {% url 'activity' as a %}
+        <a href="{{ i }}" class="header {% if request.path == i %} active {% endif %} item">
             伪乎
         </a>
-        <a href="{% url 'question' %}" class="{% if request.path == question %} active {% endif %} item">问题</a>
-        <a href="{% url 'topic' %}" class="{% if request.path == topic %} active {% endif %} item">话题</a>
-        <a href="{% url 'activity' %}" class="{% if request.path == activity %} active {% endif %} item">动态</a>
+        <a href="{{ q }}" class="{% if request.path == q %} active {% endif %} item">问题</a>
+        <a href="{{ t }}" class="{% if request.path == t %} active {% endif %} item">话题</a>
+        <a href="{{ a }}" class="{% if request.path == a %} active {% endif %} item">动态</a>
         <div class="item">
             <form action="{% url 'search' %}" method="get">
-            <div class="ui icon input">
-                <input placeholder="Search..." type="text">
-                <i class="search link icon"></i>
-            </div>
-                </form>
+                <div class="ui icon input">
+                    <input placeholder="Search..." type="text">
+                    <i class="search link icon"></i>
+                </div>
+            </form>
         </div>
-    <div class="item">
-        <a class="ui primary button" href="{% url 'ask' %}">
-            提问
-        </a>
-    </div>
+        <div class="item">
+            <a class="ui primary button" href="{% url 'ask' %}">
+                提问
+            </a>
+        </div>
 
         <!-- menu right begins -->
         <div class="right menu">
@@ -105,11 +104,7 @@
     {% endif %}
 </div>
 
-<div class="ui segment" style="height: 1000px;">
-    <div class="ui container">
-        {% block content %}{% endblock %}
-    </div>
-</div>
+{% block content %}{% endblock %}
 
 
 <!-- footer begins here -->

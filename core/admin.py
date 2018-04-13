@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import Question, Answer, Action
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'author', 'created', 'updated')
+    list_display = ('title', 'author', 'created', 'updated')
     list_filter = ('created', 'updated', 'author')
     search_fields = ('title', 'body')
     ordering = ['title']

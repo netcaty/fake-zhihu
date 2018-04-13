@@ -9,8 +9,6 @@ from taggit.managers import TaggableManager
 
 class Question(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255,
-                            unique_for_date='created')
     author = models.ForeignKey(User, related_name='questions')
     body = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -28,7 +26,7 @@ class Question(models.Model):
         return reverse('question_detail',
                        args=[self.id])
 
-    def related_answers_count(self):
+    def answers_count(self):
         return self.answers.count()
 
 

@@ -72,16 +72,17 @@ def question_detail(request, id):
 
     if request.method == 'POST':
         answer_form = AnswerForm(request.POST)
+        '''
         if question.answers.filter(author=request.user).exists():
             messages.error(request, '你已回答过此问题了！')
             return redirect(question)
+        '''
         if answer_form.is_valid():
             new_answer = answer_form.save(commit=False)
             new_answer.question = question
             new_answer.author = request.user
             new_answer.save()
             create_action(request.user, '回答了问题', question)
-            messages.success(request, '你已成功回答此问题!')
             return redirect(question)
     else:
         answer_form = AnswerForm()
