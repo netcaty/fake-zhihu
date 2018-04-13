@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load awesome_tags %}
+{% load widget_tweaks %}
+{% block title %}Ask{% endblock %}
+{% block content %}
+    <div class="ui grid">
+        <div class="eleven wide column">
+            <form class="ui form" action="." method="post">
+
+                <input type="hidden">{% csrf_token %}</input>
+                <div class="field">
+                    <label>标题</label>
+                    <input name="title" placeholder="明确的问题" type="text">
+                </div>
+                <div class="field">
+                    <label>问题描述</label>
+                    <textarea name="body" placeholder="问题背景、详细信息(可选)"></textarea>
+                </div>
+                <div class="field">
+                    <input name="topics" placeholder="添加所属话题，最多5个，用空格分开" type="text">
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input tabindex="0" name="notify" type="checkbox">
+                        <label>有新的回复时通知我?</label>
+                    </div>
+                </div>
+                <button class="ui button primary" type="submit">提交你的问题</button>
+
+
+            </form>
+            {% form_errors form %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,100 +1,164 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}知乎，与世界分享你的故事{% endblock %}</title>
+    <link href="{% static 'css/semantic.min.css' %}" rel="stylesheet">
     <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/semantic.min.js' %}"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <link rel="stylesheet" href="//cdn.bootcss.com/uikit/2.25.0/css/uikit.css"/>
-    <script src="//cdn.bootcss.com/uikit/2.25.0/js/uikit.js"></script>
-    <style>
-        nav > .uk-container {
-            padding: 10px 0;
-            max-width: 980px;
-            margin: 0 auto;
+
+    <style type="text/css">
+        body {
+            background-color: #e6ecf0;
         }
 
-        .content {
-            padding: 90px 0;
-            max-width: 980px;
-            margin: 0 auto;
+        .ui.menu .item img.logo {
+            margin-right: 1.5em;
+        }
+
+        .main.container {
+            margin-top: 7em;
+        }
+
+        .ui.footer.segment {
+            margin: 5em 0em 0em;
+            padding: 5em 0em;
         }
     </style>
 </head>
 <body>
-<nav class="uk-navbar">
-    <div class="uk-container uk-container-center">
-
-        <a href="#" class="uk-navbar-brand">知乎</a>
-        {% url 'activity' as a %}
-        {% url 'topic' as t %}
-        {% url 'question' as q %}
-        {% url 'ranking' as r %}
-        <ul class="uk-navbar-nav">
-            <li {% if q == request.path %}class="uk-active"{% endif %}>
-                <a href="{{ q }}">问题</a>
-            </li>
-            <li {% if r == request.path %}class="uk-active"{% endif %}>
-                <a href="{{ r }}">最热</a>
-            </li>
-
-            <li {% if t == request.path %}class="uk-active"{% endif %}>
-                <a href="{{ t }}">话题</a>
-            </li>
-
-            <li {% if a == request.path %}class="uk-active"{% endif %}>
-                <a href="{{ a }}">动态</a>
-            </li>
-        </ul>
-
-
-        <div class="uk-navbar-flip">
-            <ul class="uk-navbar-nav">
-                {% if request.user.is_authenticated %}
-                    <li class="uk-parent" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
-                        <a href="">{{ request.user }}</a>
-
-                        <div class="uk-dropdown-blank uk-dropdown-navbar" style="top: 40px; left: 0px;">
-                            <ul class="uk-nav uk-nav-navbar">
-                                <li><a href="{{ request.user.get_absolute_url }}">主页</a></li>
-                                <li><a href="{% url 'account:logout' %}">退出</a></li>
-                            </ul>
-                        </div>
-
-                    </li>
-                {% else %}
-                    <ul class="uk-navbar-nav">
-                        <li><a href="{% url 'account:login' %}">登录</a></li>
-                        <li><a href="{% url 'account:register' %}">注册</a></li>
-                    </ul>
-                {% endif %}
-            </ul>
+<!-- navbar begins -->
+<div class="ui menu">
+    <div class="ui container">
+        {% url 'index' as index %}
+        {% url 'question' as question %}
+        {% url 'topic' as topic %}
+        {% url 'activity' as activity %}
+        <a href="{% url 'index' %}" class="header {% if request.path == index %} active {% endif %} item">
+            伪乎
+        </a>
+        <a href="{% url 'question' %}" class="{% if request.path == question %} active {% endif %} item">问题</a>
+        <a href="{% url 'topic' %}" class="{% if request.path == topic %} active {% endif %} item">话题</a>
+        <a href="{% url 'activity' %}" class="{% if request.path == activity %} active {% endif %} item">动态</a>
+        <div class="item">
+            <form action="{% url 'search' %}" method="get">
+            <div class="ui icon input">
+                <input placeholder="Search..." type="text">
+                <i class="search link icon"></i>
+            </div>
+                </form>
         </div>
+    <div class="item">
+        <a class="ui primary button" href="{% url 'ask' %}">
+            提问
+        </a>
+    </div>
 
-        <div class="uk-navbar-content uk-navbar-center">
-            <form class="uk-form uk-margin-remove uk-display-inline-block" action="{% url 'search' %}">
-                <input class="uk-form-width-medium" type="text" placeholder="随便搜索" name="word">
-                <button class="uk-button uk-button-primary" type="submit">搜索</button>
-            </form>
+        <!-- menu right begins -->
+        <div class="right menu">
+
+            {% if request.user.is_authenticated %}
+                <div class="ui simple right floated dropdown item">
+                    <a href="#" class="ui primary button">{{ request.user }} <i class="dropdown icon"></i></a>
+                    <div class="menu transition" tabindex="-1">
+                        <a class="item" href="{{ request.user.get_absolute_url }}">主页</a>
+                        <a class="item" href="{% url 'account:logout' %}">退出</a>
+                    </div>
+                </div>
+            {% else %}
+
+                <div class="right menu">
+                    <div class="item">
+                        <a class="ui button" href="{% url 'account:login' %}">登录</a>
+                    </div>
+                    <div class="item">
+                        <a class="ui primary button" href="{% url 'account:register' %}">加入我们</a>
+                    </div>
+                </div>
+
+
+            {% endif %}
+        </div>
+        <!-- menu right ends -->
+    </div>
+
+</div>
+<!-- navbar ends -->
+
+
+<div class="segement message is-info">
+    {% if messages %}
+        <div class="message-body">
+
+            <ul class="list">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">
+                        {{ message|safe }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    {% endif %}
+</div>
+
+<div class="ui segment" style="height: 1000px;">
+    <div class="ui container">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+
+<!-- footer begins here -->
+<div class="ui inverted vertical footer segment">
+    <div class="ui center aligned container">
+        <div class="ui stackable inverted divided grid">
+            <div class="three wide column">
+                <h4 class="ui inverted header">Group 1</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">Link One</a>
+                    <a href="#" class="item">Link Two</a>
+                    <a href="#" class="item">Link Three</a>
+                    <a href="#" class="item">Link Four</a>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header">Group 2</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">Link One</a>
+                    <a href="#" class="item">Link Two</a>
+                    <a href="#" class="item">Link Three</a>
+                    <a href="#" class="item">Link Four</a>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header">Group 3</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">Link One</a>
+                    <a href="#" class="item">Link Two</a>
+                    <a href="#" class="item">Link Three</a>
+                    <a href="#" class="item">Link Four</a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header">Footer Header</h4>
+                <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <img src="assets/images/logo.png" class="ui centered mini image">
+        <div class="ui horizontal inverted small divided link list">
+            <a class="item" href="#">Site Map</a>
+            <a class="item" href="#">Contact Us</a>
+            <a class="item" href="#">Terms and Conditions</a>
+            <a class="item" href="#">Privacy Policy</a>
         </div>
     </div>
-</nav>
-{% if messages %}
-    <ul class="uk-alert uk-alert-success">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">
-                {{ message|safe }}
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
-
-<div class="content">
-    {% block content %}
-    {% endblock %}
 </div>
+<!-- footer ends here>
 
 <!-- scripts begin here -->
 <script>

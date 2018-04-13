@@ -1,0 +1,13 @@
+<div class="ui card">
+    <div class="content">
+        <div class="header">相关问题</div>
+    </div>
+    {% for question in questions %}
+        <div class="content">
+            <div class="summary">
+                <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
+                {{ question.related_answers_count }}
+            </div>
+        </div>
+    {% endfor %}
+</div>

@@ -12,5 +12,5 @@ urlpatterns = [
     url(r'^people/edit/$', account.views.profile_edit, name='profile_edit'),
     url(r'^people/follow/$', views.user_follow, name='user_follow'),
     url(r'^people/(?P<username>[-\w]+)/$', views.people, name='people'),
-    url(r'^question/(?P<id>\d+)/answer/create/$', views.create_answer, name='create_answer')
+    url(r'^question/ask/$', views.create_question, name='ask'),
 ]

@@ -1,33 +1,108 @@
-{% extends 'base.html' %}
-{% load widget_tweaks %}
-{% block title %}Log-in{% endblock %}
-{% block content %}
-     <div class="uk-container uk-container-center uk-margin-top" style="max-width: 400px">
-        <h2 class="uk-text-center">登录</h2>
-        <form class="uk-panel uk-panel-box uk-form-stacked uk-form" action="{% url 'account:login' %}" method="post">
-            {% for error in form.non_field_errors %}
-                <p class="uk-text-warning uk-text-left">{{ error }}</p>
-            {% endfor %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Site Properties -->
+    <title>{% block title %}登录{% endblock %}</title>
+
+    <link href="{% static 'css/semantic.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/semantic.min.js' %}"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+
+        body > .grid {
+            height: 100%;
+        }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+    </style>
+</head>
+<body>
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui teal image header">
+
+            <div class="content">
+                登录
+            </div>
+        </h2>
+        <form class="ui large form" action="{% url 'account:login' %}" method="post">
             {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}">
-            {% for field in form.visible_fields %}
-              <div class="uk-form-row">
-                <label class="uk-form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field|add_class:"uk-width-1-1 uk-form-large" }}
-                {% for error in field.errors %}
-                  <p class="uk-text-warning uk-text-left">{{ error }}</p>
-                {% endfor %}
-              </div>
-            {% endfor %}
+            <div class="ui stacked segment">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="username" placeholder="Your username">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="ui fluid large teal submit button">登录</div>
+            </div>
 
-            <div class="uk-form-row">
-                <button class="uk-width-1-1 uk-button uk-button-primary uk-button-large" type="submit">登录</button>
-            </div>
-            <div class="uk-form-row uk-text-small">
-                <label class="uk-float-left"><input type="checkbox"> Remember Me</label>
-                <a class="uk-float-right uk-link uk -link-muted" href="#">Forgot Password?</a>
-            </div>
+            <div class="ui error message"></div>
+
         </form>
-    </div>
 
-{% endblock %}
+        <div class="ui message">
+            New to us? <a href="{% url 'account:register' %}">注册</a>
+        </div>
+    </div>
+</div>
+
+<!-- scripts begin here -->
+<script>
+    $(function () {
+        $('.ui.form')
+            .form({
+                fields: {
+                    username: {
+                        identifier: 'username',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'Please enter your username'
+                            }
+                        ]
+                    },
+                    password: {
+                        identifier: 'password',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'Please enter your password'
+                            },
+                            {
+                                type: 'length[6]',
+                                prompt: 'Your password must be at least 6 characters'
+                            }
+                        ]
+                    }
+                }
+            })
+        ;
+    });
+
+</script>
+<!-- scripts end here -->
+</body>
+</html>

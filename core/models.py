@@ -12,7 +12,7 @@ class Question(models.Model):
     slug = models.SlugField(max_length=255,
                             unique_for_date='created')
     author = models.ForeignKey(User, related_name='questions')
-    body = models.TextField(null=True)
+    body = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -27,6 +27,9 @@ class Question(models.Model):
     def get_absolute_url(self):
         return reverse('question_detail',
                        args=[self.id])
+
+    def related_answers_count(self):
+        return self.answers.count()
 
 
 class Answer(models.Model):

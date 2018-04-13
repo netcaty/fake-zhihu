@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'fakezhihu.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'zhihu',
-        'USER': 'root',
-        'PASSWORD': 'lpc.6610402',
-        'HOST': '192.168.0.103',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'USER': 'root',
+        # 'PASSWORD': 'lpc.6610402',
+        # 'HOST': '192.168.0.103',
+        # 'PORT': '3306',
     }
 }
 

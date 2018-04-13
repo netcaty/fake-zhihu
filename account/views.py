@@ -31,6 +31,7 @@ def user_login(request):
                   {'form': form})
 
 def register(request):
+
     if request.method == 'POST':
         register_form = RegistrationForm(request.POST)
         if register_form.is_valid():
@@ -44,6 +45,7 @@ def register(request):
     else:
         register_form = RegistrationForm()
 
+    print(register_form.errors)
     return render(request,
                   'account/register.html',
                   {'form': register_form})
